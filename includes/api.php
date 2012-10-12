@@ -1,7 +1,9 @@
 <?
 # RESTful API - not to be confused with AJAX stuff
 class BbApi_v1 extends AbstractBbApi {
-
+  function test() {
+    return bam_get_products();
+  }
 }
 
 abstract class AbstractBbApi {
@@ -24,7 +26,7 @@ abstract class AbstractBbApi {
   }
 
   function _isAdmin() {
-    return buf_current_user_is_admin();
+    return bam_current_user_is_admin();
   }
 
   function _assertIsAdmin() {
@@ -57,11 +59,11 @@ add_action(constant('WP_DEBUG') || constant('BB_DEBUG') ? 'wp_loaded' : 'bb_acti
 add_action('parse_request', 'bb_parse_request');
 
 // e.g., bb/1/profiles/:id
-define('BB_API_REWRITE_RULE', '(sp)/(\d)/([a-z]+)(/.*?)?(.json)?$');
+define('BB_API_REWRITE_RULE', '(bb)/(\d)/([a-z]+)(/.*?)?(.json)?$');
 
 function bb_rewrite_rules_array($rules) {
   return array(
-    BB_API_REWRITE_RULE => 'index.php?_sp=$matches[3]&_v=$matches[2]&_args=$matches[4]'
+    BB_API_REWRITE_RULE => 'index.php?_bb=$matches[3]&_v=$matches[2]&_args=$matches[4]'
   ) + $rules;
 }
 
@@ -81,13 +83,13 @@ function bb_flush_rewrite_rules() {
 }
 
 function bb_parse_request($wp) {
-  if (isset($wp->query_vars['_sp'])) {    
+  if (isset($wp->query_vars['_bb'])) {    
     $class = "BbApi_v{$wp->query_vars['_v']}";
     if (!class_exists($class)) {
       return;
     }
     $api = new $class();
-    $fx = array($api, $wp->query_vars['_sp']);
+    $fx = array($api, $wp->query_vars['_bb']);
     if (is_callable($fx)) {
       $result = call_user_func_array($fx, array_filter(explode('/', $wp->query_vars['_args'])));
       header('Content-Type: application/json');

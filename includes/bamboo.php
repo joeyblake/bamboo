@@ -6,7 +6,7 @@ add_action('admin_enqueue_scripts', 'bam_wp_enqueue_scripts');
 
 function bam_init() {
   
-  register_post_type('bb_purchases', array(
+  register_post_type('bb_purchase', array(
     'public' => false,
     'publicly_queryable' => false,
     'show_ui' => false, 
@@ -19,7 +19,7 @@ function bam_init() {
     'menu_position' => null
   ));
 
-  register_post_type('bb_products', array(
+  register_post_type('bb_product', array(
     'public' => false,
     'publicly_queryable' => false,
     'show_ui' => false, 
@@ -34,5 +34,9 @@ function bam_init() {
 }
 
 function bam_wp_enqueue_scripts() {
+
+}
+
+function bam_admin_bar_menu() {
 
 }

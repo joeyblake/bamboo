@@ -33,5 +33,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 @define( BB_DEBUG, false);
 
 #bootstrap
-require(BB_DIR.'/lib/data.php');
+require(BB_DIR.'/includes/data.php');
 require(BB_DIR.'/includes/api.php');
+require(BB_DIR.'/includes/bamboo.php');
